@@ -1,0 +1,131 @@
+# Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later
+# windows-dez — GTK 2 theme (legacy apps). Flat, square corners, blue accent.
+
+gtk-color-scheme = "bg_color:#F0F0F0\nfg_color:#000000\nbase_color:#FFFFFF\ntext_color:#000000\nselected_bg_color:#0078D7\nselected_fg_color:#FFFFFF\ntooltip_bg_color:#F2F2F2\ntooltip_fg_color:#000000"
+
+gtk-auto-mnemonics = 1
+gtk-button-images = 0
+gtk-menu-images = 1
+gtk-toolbar-style = GTK_TOOLBAR_ICONS
+
+style "dez-default"
+{
+  xthickness = 1
+  ythickness = 1
+
+  GtkWidget::focus-line-width = 1
+  GtkWidget::focus-padding    = 0
+  GtkWidget::link-color       = "#0066CC"
+  GtkWidget::visited-link-color = "#5C2D91"
+  GtkButton::child-displacement-x = 0
+  GtkButton::child-displacement-y = 0
+  GtkButton::default-border   = {0, 0, 0, 0}
+  GtkButton::inner-border     = {8, 8, 2, 2}
+  GtkCheckButton::indicator-size = 13
+  GtkScrollbar::has-backward-stepper = 0
+  GtkScrollbar::has-forward-stepper  = 0
+  GtkRange::slider-width = 12
+  GtkRange::trough-border = 0
+  GtkScrollbar::min-slider-length = 30
+  GtkScale::slider-length = 10
+  GtkPaned::handle-size = 1
+  GtkTreeView::expander-size = 11
+  GtkMenuBar::internal-padding = 0
+  GtkMenu::horizontal-padding = 0
+  GtkMenu::vertical-padding = 2
+  GtkMenuItem::arrow-scaling = 0.6
+  GtkEntry::inner-border = {6, 6, 3, 3}
+  GtkToolbar::shadow-type = GTK_SHADOW_NONE
+  GtkMenuBar::shadow-type = GTK_SHADOW_NONE
+
+  bg[NORMAL]        = @bg_color
+  bg[PRELIGHT]      = "#E5F1FB"
+  bg[SELECTED]      = @selected_bg_color
+  bg[ACTIVE]        = "#CCE4F7"
+  bg[INSENSITIVE]   = @bg_color
+
+  fg[NORMAL]        = @fg_color
+  fg[PRELIGHT]      = @fg_color
+  fg[SELECTED]      = @selected_fg_color
+  fg[ACTIVE]        = @fg_color
+  fg[INSENSITIVE]   = "#838383"
+
+  base[NORMAL]      = @base_color
+  base[PRELIGHT]    = "#E5F3FF"
+  base[SELECTED]    = "#CCE8FF"
+  base[ACTIVE]      = "#D9D9D9"
+  base[INSENSITIVE] = "#F7F7F7"
+
+  text[NORMAL]      = @text_color
+  text[PRELIGHT]    = @text_color
+  text[SELECTED]    = @text_color
+  text[ACTIVE]      = @text_color
+  text[INSENSITIVE] = "#838383"
+}
+
+style "dez-button" {
+  bg[NORMAL]   = "#E1E1E1"
+  bg[PRELIGHT] = "#E5F1FB"
+  bg[ACTIVE]   = "#CCE4F7"
+}
+
+style "dez-menu" {
+  xthickness = 1
+  ythickness = 2
+  bg[NORMAL]   = "#F2F2F2"
+  bg[PRELIGHT] = "#91C9F7"
+  bg[SELECTED] = "#91C9F7"
+  fg[PRELIGHT] = "#000000"
+  fg[SELECTED] = "#000000"
+  text[PRELIGHT] = "#000000"
+}
+
+style "dez-menubar" {
+  bg[NORMAL]   = "#FFFFFF"
+  bg[PRELIGHT] = "#E5F1FB"
+  bg[SELECTED] = "#E5F1FB"
+  fg[PRELIGHT] = "#000000"
+  fg[SELECTED] = "#000000"
+}
+
+style "dez-tooltip" {
+  xthickness = 6
+  ythickness = 4
+  bg[NORMAL] = @tooltip_bg_color
+  fg[NORMAL] = @tooltip_fg_color
+}
+
+style "dez-scrollbar" {
+  bg[NORMAL]   = "#C2C2C2"
+  bg[PRELIGHT] = "#A6A6A6"
+  bg[ACTIVE]   = "#F0F0F0"
+}
+
+style "dez-progress" {
+  bg[SELECTED] = "#0078D7"
+  bg[NORMAL]   = "#E6E6E6"
+}
+
+style "dez-panel" {
+  bg[NORMAL]   = "#EEEEEE"
+  bg[PRELIGHT] = "#DCDCDC"
+  bg[ACTIVE]   = "#D0D0D0"
+  bg[SELECTED] = "#D0D0D0"
+  fg[NORMAL]   = "#000000"
+  fg[PRELIGHT] = "#000000"
+  fg[ACTIVE]   = "#000000"
+  fg[SELECTED] = "#000000"
+  text[NORMAL] = "#000000"
+}
+
+class "GtkWidget"        style "dez-default"
+class "GtkButton"        style "dez-button"
+class "GtkScrollbar"     style "dez-scrollbar"
+class "GtkProgressBar"   style "dez-progress"
+class "GtkMenu"          style "dez-menu"
+widget_class "*<GtkMenuItem>*" style "dez-menu"
+widget_class "*<GtkMenuBar>*"  style "dez-menubar"
+widget "gtk-tooltip*"    style "dez-tooltip"
+widget "*PanelWidget*"   style "dez-panel"
+widget "*PanelApplet*"   style "dez-panel"
+widget "*XfcePanel*"     style "dez-panel"

@@ -1,0 +1,94 @@
+/* Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later */
+
+/* ==========================================================================
+   windows-dez-light — light taskbar, Start menu and panel menus
+   (Windows 10 light mode). Appended to the regular theme at build time.
+   ========================================================================== */
+@define-color taskbar_bg rgba(238,238,238,0.96);
+@define-color taskbar_fg #000000;
+
+.xfce4-panel, #XfcePanelWindow, .xfce4-panel.background {
+  background-color: @taskbar_bg;
+  color: @taskbar_fg;
+  box-shadow: inset 0 1px alpha(#000000, 0.08);
+}
+.xfce4-panel label, #XfcePanelWindow label { color: @taskbar_fg; }
+.xfce4-panel button, #XfcePanelWindow button { color: @taskbar_fg; }
+.xfce4-panel button:hover, #XfcePanelWindow button:hover { background-color: alpha(#000000, 0.07); }
+.xfce4-panel button:active, .xfce4-panel button:checked,
+#XfcePanelWindow button:active, #XfcePanelWindow button:checked { background-color: alpha(#000000, 0.11); }
+.xfce4-panel button:checked, #XfcePanelWindow button:checked { box-shadow: inset 0 -2px @accent; }
+.xfce4-panel #whiskermenu-button:checked, .xfce4-panel #applicationsmenu-button:checked,
+.xfce4-panel #clock-button:checked { box-shadow: none; }
+#whiskermenu-button:hover, #applicationsmenu-button:hover { background-color: alpha(#000000, 0.07); color: @accent; }
+#whiskermenu-button:checked, #applicationsmenu-button:checked { background-color: alpha(#000000, 0.11); }
+.docklike-plugin .group.active { background-color: alpha(#000000, 0.11); box-shadow: inset 0 -2px @accent; }
+.docklike-plugin .group.open:not(.active) { box-shadow: inset 0 -2px alpha(#0078D7, 0.55); }
+.docklike-plugin .group:hover { background-color: alpha(#000000, 0.07); }
+#showdesktop-button, .xfce4-panel #showdesktop-button { border-left: 1px solid alpha(#000000, 0.25); }
+
+/* Panel menus and calendar */
+.xfce4-panel menu, #XfcePanelWindow menu, .xfce4-panel .menu {
+  background-color: #F2F2F2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+}
+.xfce4-panel menu menuitem, #XfcePanelWindow menu menuitem,
+.xfce4-panel menu menuitem label { color: #000000; }
+.xfce4-panel menu menuitem:hover, #XfcePanelWindow menu menuitem:hover { background-color: #DADADA; color: #000000; }
+.xfce4-panel menu separator { background-color: #CCCCCC; }
+.xfce4-panel calendar { background-color: #F2F2F2; color: #000000; border-color: #CCCCCC; }
+.xfce4-panel calendar:selected { background-color: @accent; color: #FFFFFF; }
+
+/* Whisker Menu */
+#whiskermenu-window, .whiskermenu-window, window#whiskermenu-window {
+  background-color: rgba(242,242,242,0.98);
+  color: #000000;
+  border: 1px solid #CCCCCC;
+}
+#whiskermenu-window *, .whiskermenu-window * { color: #000000; }
+#whiskermenu-window entry, .whiskermenu-window entry {
+  background-color: #FFFFFF;
+  border: 2px solid #7A7A7A;
+  color: #000000;
+}
+#whiskermenu-window entry:hover { border-color: #000000; }
+#whiskermenu-window entry:focus { border-color: @accent; }
+#whiskermenu-window treeview, #whiskermenu-window iconview,
+#whiskermenu-window .view, #whiskermenu-window scrolledwindow,
+.whiskermenu-window .view { background-color: transparent; color: #000000; }
+#whiskermenu-window .view:hover, #whiskermenu-window treeview:hover,
+.whiskermenu-window .view:hover { background-color: alpha(#000000, 0.07); }
+#whiskermenu-window .view:selected, #whiskermenu-window treeview:selected,
+.whiskermenu-window .view:selected { background-color: alpha(#000000, 0.11); color: #000000; }
+#whiskermenu-window button, .whiskermenu-window button { color: #000000; }
+#whiskermenu-window button:hover, .whiskermenu-window button:hover { background-color: alpha(#000000, 0.07); }
+#whiskermenu-window button:checked, .whiskermenu-window button:checked {
+  background-color: alpha(#000000, 0.09);
+  box-shadow: inset 3px 0 @accent;
+}
+#whiskermenu-window scrollbar slider { background-color: alpha(#000000, 0.30); }
+#whiskermenu-window scrollbar button { background-color: transparent; color: alpha(#000000, 0.55); }
+#whiskermenu-window scrollbar button:hover { background-color: alpha(#000000, 0.07); color: #000000; }
+#whiskermenu-window label.dim-label { color: alpha(#000000, 0.6); }
+#whiskermenu-window separator { background-color: #D0D0D0; }
+
+/* Whisker Menu right-click (context) menu: light */
+#whiskermenu-window menu, #whiskermenu-window .menu, .whiskermenu-window menu {
+  background-color: #F2F2F2;
+  border: 1px solid #CCCCCC;
+  color: #000000;
+}
+#whiskermenu-window menu menuitem, #whiskermenu-window menu menuitem label,
+#whiskermenu-window menu menuitem accelerator { color: #000000; background-color: transparent; }
+#whiskermenu-window menu menuitem:hover { background-color: #DADADA; }
+#whiskermenu-window menu menuitem:disabled, #whiskermenu-window menu menuitem:disabled label { color: #8A8A8A; }
+#whiskermenu-window menu separator { background-color: #CCCCCC; }
+#whiskermenu-window menu image { color: #000000; }
+
+/* Light menus keep their regular (colored) icons */
+#whiskermenu-window menu image, #whiskermenu-window menu menuitem image,
+.xfce4-panel menu image, #XfcePanelWindow menu image {
+  -gtk-icon-style: requested;
+  color: #000000;
+}

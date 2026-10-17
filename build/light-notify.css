@@ -1,0 +1,32 @@
+/* Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later */
+/* windows-dez-light — xfce4-notifyd notifications, Windows 10 light mode */
+
+#XfceNotifyWindow {
+  background-color: #F2F2F2;
+  border: 1px solid #CCCCCC;
+  border-radius: 0;
+  color: #000000;
+  padding: 4px;
+}
+#XfceNotifyWindow:hover { background-color: #E6E6E6; }
+
+#XfceNotifyWindow label { color: #1A1A1A; }
+#XfceNotifyWindow label#summary { color: #000000; font-weight: bold; }
+#XfceNotifyWindow label#body { color: #333333; }
+#XfceNotifyWindow label#body:link { color: #0066CC; }
+
+#XfceNotifyWindow button {
+  background-color: #E1E1E1;
+  border: 1px solid #ADADAD;
+  border-radius: 0;
+  color: #000000;
+  padding: 4px 12px;
+  box-shadow: none;
+}
+#XfceNotifyWindow button:hover { background-color: #E5F1FB; border-color: #0078D7; }
+#XfceNotifyWindow button:active { background-color: #CCE4F7; }
+#XfceNotifyWindow button label { color: #000000; }
+
+#XfceNotifyWindow progressbar trough { background-color: #DADADA; min-height: 4px; border: none; }
+#XfceNotifyWindow progressbar progress { background-color: #0078D7; min-height: 4px; border: none; }
+#XfceNotifyWindow progressbar { color: #000000; }

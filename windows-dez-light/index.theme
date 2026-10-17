@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=windows-dez-light
+Comment=Flat XFCE theme inspired by Windows 10 (light taskbar and Start menu) — by Rafael Carvalho Ramos
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=windows-dez-light
+MetacityTheme=windows-dez
+IconTheme=windows-dez
+CursorTheme=Adwaita
+ButtonLayout=menu:minimize,maximize,close
