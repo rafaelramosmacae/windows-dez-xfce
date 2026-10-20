@@ -503,6 +503,8 @@ statusbar, .statusbar {
   border-top: 1px solid #F0F0F0;
   color: #333333;
 }
+/* the frame around the status text (e.g. Thunar): a bit lighter than other lines */
+statusbar frame > border, .statusbar frame > border { border-color: #E8E8E8; }
 .path-bar button, .pathbar button, .location-button {
   padding: 2px 8px;
   border-color: transparent;
@@ -585,7 +587,9 @@ calendar:indeterminate { color: #AAAAAA; }
 frame > border, .frame { border: 1px solid #D9D9D9; border-radius: 0; }
 scrolledwindow viewport.frame { border: none; }
 scrolledwindow.frame { border: 1px solid #D9D9D9; }
-paned > separator { background-color: #E5E5E5; }
+/* plain 1 px divider (without this GTK draws its dotted handle pattern on it,
+   e.g. between Thunar's side pane and file view) */
+paned > separator { background-color: #E5E5E5; background-image: none; -gtk-icon-source: none; }
 
 /* Expander */
 expander title > arrow { -gtk-icon-source: -gtk-icontheme("pan-end-symbolic"); min-width: 16px; }
@@ -814,15 +818,53 @@ textview text selection, textview text selection:focus {
 }
 #whiskermenu-window menu menuitem:disabled image { color: #8A8A8A; }
 
-/* Taskbar window buttons: 25% narrower (default 200 px) and 1 pt smaller labels */
+/* Taskbar window buttons: 140 px wide (default 200 px) and 1 pt smaller labels */
 XfceTasklist, .tasklist, .xfce4-panel *, #XfcePanelWindow * {
-  -XfceTasklist-max-button-length: 150;
-  -XfceTasklist-min-button-length: 150;
+  -XfceTasklist-max-button-length: 140;
+  -XfceTasklist-min-button-length: 140;
 }
 .tasklist button label, .xfce4-panel .tasklist button label, #XfcePanelWindow .tasklist button label,
 #tasklist-button label {
   font-size: 8pt;
 }
+
+/* --------------------------------------------------------------------------
+   Whisker Menu laid out like the Windows 10 Start menu (see install.sh,
+   --taskbar): narrow rail of category icons on the left, app list, then
+   the search box and the user / power buttons at the bottom
+   -------------------------------------------------------------------------- */
+#whiskermenu-window .categories {
+  background-color: alpha(#000000, 0.22);
+  padding: 2px 0;
+}
+#whiskermenu-window button.category-button {
+  min-width: 66px;            /* + 6 px of Whisker spacing = 72 px rail */
+  min-height: 36px;
+  padding: 0;
+}
+/* category icons: 22 px (drawn at 24 px, the nearest Whisker size) */
+#whiskermenu-window button.category-button image { -gtk-icon-transform: scale(0.9167); }
+/* Whisker reserves room for a hidden scrollbar next to the categories; drop it
+   so the rail is exactly as wide as its buttons (the mouse wheel still scrolls).
+   Only the categories column has a viewport, so the app list keeps its scrollbar. */
+#whiskermenu-window scrolledwindow > viewport ~ scrollbar,
+#whiskermenu-window scrolledwindow > viewport ~ scrollbar slider,
+#whiskermenu-window scrolledwindow > viewport ~ scrollbar button {
+  min-width: 0; min-height: 0; border: none; padding: 0; margin: 0;
+  background: none; -gtk-icon-source: none;
+}
+#whiskermenu-window button.category-button:checked { box-shadow: inset 3px 0 @accent; }
+#whiskermenu-window .categories separator { margin: 4px 10px; }
+#whiskermenu-window treeview.launchers { padding: 4px 6px; font-size: 8pt; }
+#whiskermenu-window treeview.launchers:hover { background-color: alpha(#FFFFFF, 0.10); }
+#whiskermenu-window .search-area { padding: 6px 4px 4px 4px; }
+#whiskermenu-window .search-area entry { min-height: 34px; border-width: 2px; }
+#whiskermenu-window .title-area { padding: 2px 0 0 0; }
+#whiskermenu-window .title-area label.profile-username { font-weight: normal; }
+#whiskermenu-window button.command-button { min-width: 40px; min-height: 40px; padding: 0; }
+#whiskermenu-window button.command-button image { -gtk-icon-style: symbolic; color: #FFFFFF; }
+#whiskermenu-window button.command-button:hover image { color: #4CC2FF; }
+#whiskermenu-window scrollbar, #whiskermenu-window scrollbar.vertical { border-color: transparent; }
 /* Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later */
 
 /* ==========================================================================
@@ -917,3 +959,9 @@ XfceTasklist, .tasklist, .xfce4-panel *, #XfcePanelWindow * {
   -gtk-icon-style: requested;
   color: #000000;
 }
+
+/* Windows 10 style Start menu layout: light category rail and row hover */
+#whiskermenu-window .categories { background-color: alpha(#000000, 0.05); }
+#whiskermenu-window treeview.launchers:hover { background-color: alpha(#000000, 0.07); }
+#whiskermenu-window button.command-button image { color: #1A1A1A; }
+#whiskermenu-window button.command-button:hover image { color: @accent; }

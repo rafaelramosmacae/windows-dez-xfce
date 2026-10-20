@@ -92,3 +92,9 @@
   -gtk-icon-style: requested;
   color: #000000;
 }
+
+/* Windows 10 style Start menu layout: light category rail and row hover */
+#whiskermenu-window .categories { background-color: alpha(#000000, 0.05); }
+#whiskermenu-window treeview.launchers:hover { background-color: alpha(#000000, 0.07); }
+#whiskermenu-window button.command-button image { color: #1A1A1A; }
+#whiskermenu-window button.command-button:hover image { color: @accent; }

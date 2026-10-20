@@ -32,7 +32,7 @@ ensure_start_button() {
         def="org.xfce.panel.$type"
         icon="$(xfconf-query -c xfce4-panel -p "$id/button-icon" 2>/dev/null || true)"
         case "$icon" in
-          start-here|"$NAME-start-light"|*"/$NAME/"*|*"/Dez/"*)
+          start-here|"$NAME-start-light"|*"/$NAME/"*|*"/$NAME-dark/"*|*"/Dez/"*)
             xfconf-query -c xfce4-panel -p "$id/button-icon" -s "$def" 2>/dev/null \
               || xfconf-query -c xfce4-panel -p "$id/button-icon" -n -t string -s "$def" ;;
         esac
@@ -42,7 +42,7 @@ ensure_start_button() {
         fi
         if [ "$type" = whiskermenu ]; then   # older Whisker Menu versions use an rc file
           rc="${XDG_CONFIG_HOME:-$HOME/.config}/xfce4/panel/whiskermenu-${id##*-}.rc"
-          [ -f "$rc" ] && sed -i -E "s#^button-icon=(start-here|$NAME-start-light|.*/$NAME/.*|.*/Dez/.*)\$#button-icon=$def#" "$rc"
+          [ -f "$rc" ] && sed -i -E "s#^button-icon=(start-here|$NAME-start-light|.*/$NAME/.*|.*/$NAME-dark/.*|.*/Dez/.*)\$#button-icon=$def#" "$rc"
         fi
       done
 }
@@ -84,7 +84,7 @@ if [ -f "$USER_CSS" ] && grep -q "windows-dez:begin" "$USER_CSS"; then
 fi
 
 echo "› Removing files…"
-rm -rf "$THEMES/$NAME" "$THEMES/$NAME-light" "$ICONS/$NAME" "$BACKGROUNDS"
+rm -rf "$THEMES/$NAME" "$THEMES/$NAME-light" "$THEMES/$NAME-dark" "$ICONS/$NAME" "$ICONS/$NAME-dark" "$BACKGROUNDS"
 
 # Restart the panel only now, after the theme files are gone
 echo "› Restarting the panel…"

@@ -68,13 +68,61 @@ S = {
     "process-stop": line((4, 4), (12, 12)) + line((12, 4), (4, 12)),
 }
 
-# Solid arrows for scrollbar buttons (Windows 10 style). These ship inside the GTK
-# theme (gtk-3.0/assets) so they work with any icon theme.
+# Start menu (Whisker Menu) commands: the theme draws them as white glyphs on
+# the dark menu, like the settings and power buttons of the Windows 10 Start menu
+def _gear():
+    teeth = "".join(_seg(8 + 4.4 * math.cos(math.radians(a)), 8 + 4.4 * math.sin(math.radians(a)),
+                         8 + 6.3 * math.cos(math.radians(a)), 8 + 6.3 * math.sin(math.radians(a)), w=1.7)
+                    for a in range(0, 360, 45))
+    return ring(8, 8, 4.4) + ring(8, 8, 1.8) + teeth
+
+def _moon():
+    # outline crescent: the part of circle 1 outside circle 2
+    (x1, y1, r1), (x2, y2, r2) = (8.0, 8.4, 5.6), (11.2, 5.4, 4.6)
+    d = math.hypot(x2 - x1, y2 - y1)
+    a = math.degrees(math.atan2(y2 - y1, x2 - x1))
+    h1 = math.degrees(math.acos((d * d + r1 * r1 - r2 * r2) / (2 * d * r1)))
+    a2 = math.degrees(math.atan2(y1 - y2, x1 - x2))
+    h2 = math.degrees(math.acos((d * d + r2 * r2 - r1 * r1) / (2 * d * r2)))
+    return arc(x1, y1, r1, a + h1, a + 360 - h1, n=40) + arc(x2, y2, r2, a2 + h2, a2 - h2, n=24)
+
+gear = _gear()
+padlock = (line((3.5, 7.5), (12.5, 7.5), (12.5, 14), (3.5, 14), (3.5, 7.5))
+           + arc(8, 5.2, 2.7, 180, 360) + line((5.3, 5.2), (5.3, 7.5)) + line((10.7, 5.2), (10.7, 7.5))
+           + line((8, 10), (8, 11.6)))
+power = arc(8, 8.8, 5.3, -55, 235, n=36) + line((8, 1.8), (8, 7.8))
+restart = S["view-refresh"]
+person = ring(8, 5.2, 2.7) + arc(8, 15.2, 5.6, 205, 335)
+moon = _moon()
+
+S.update({
+    "org.xfce.settings.manager": gear,
+    "preferences-desktop": gear,
+    "preferences-system": gear,
+    "xfsm-lock": padlock,
+    "system-lock-screen": padlock,
+    "xfsm-logout": power,
+    "system-log-out": power,
+    "xfsm-shutdown": power,
+    "system-shutdown": power,
+    "xfsm-reboot": restart,
+    "system-reboot": restart,
+    "xfsm-switch-user": person,
+    "system-users": person,
+    "xfsm-suspend": moon,
+    "system-suspend": moon,
+    "xfsm-hibernate": moon,
+    "system-hibernate": moon,
+})
+
+# Thin "boomerang" chevrons for scrollbar buttons (Windows 10 style). These ship
+# inside the GTK theme (gtk-3.0/assets) so they work with any icon theme.
+_CHEVRON = "M4 9.5L8 5.5L12 9.5L11 10.5L8 7.5L5 10.5Z"
 SCROLL_ARROWS = {
-    "scroll-up":    '<path d="M8 5.2L12.2 10H3.8z"/>',
-    "scroll-down":  '<path d="M8 10.8L3.8 6h8.4z"/>',
-    "scroll-left":  '<path d="M5.2 8L10 3.8v8.4z"/>',
-    "scroll-right": '<path d="M10.8 8L6 12.2V3.8z"/>',
+    "scroll-up":    f'<path d="{_CHEVRON}"/>',
+    "scroll-down":  f'<path transform="rotate(180 8 8)" d="{_CHEVRON}"/>',
+    "scroll-left":  f'<path transform="rotate(-90 8 8)" d="{_CHEVRON}"/>',
+    "scroll-right": f'<path transform="rotate(90 8 8)" d="{_CHEVRON}"/>',
 }
 
 if __name__ == "__main__":

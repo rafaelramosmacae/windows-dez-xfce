@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=X-GNOME-Metatheme
+Name=windows-dez-dark
+Comment=Flat XFCE theme inspired by Windows 10 (full dark mode) — by Rafael Carvalho Ramos
+Encoding=UTF-8
+
+[X-GNOME-Metatheme]
+GtkTheme=windows-dez-dark
+MetacityTheme=windows-dez-dark
+IconTheme=windows-dez-dark
+CursorTheme=Adwaita
+ButtonLayout=menu:minimize,maximize,close

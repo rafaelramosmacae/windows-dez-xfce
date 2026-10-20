@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # windows-dez — installer for XFCE
 # Author: Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — License: GPL-3.0-or-later
-# Usage: ./install.sh [--full] [--light|--dark] [--taskbar] [--wallpaper[=FILE]] [--start-icon=FILE] [--system] [--no-apply]
+# Usage: ./install.sh [--full] [--light|--dark|--fulldark] [--taskbar] [--wallpaper[=FILE]] [--start-icon=FILE] [--system] [--no-apply]
 set -euo pipefail
 
 NAME=windows-dez
-VERSION=1.0.1
+VERSION=1.2.0
 
 restart_panel() {
   pgrep -x xfce4-panel >/dev/null || return 0
@@ -24,8 +24,11 @@ Usage: ./install.sh [options]
   (no options)          install and apply GTK theme, icons, window borders, notifications and font
   --dark                dark taskbar, Start menu and notifications (default)
   --light               light taskbar, Start menu and notifications
-  --taskbar             bottom panel, 33 px, full width, Start button without label, icon-only window list,
-                        Start menu categories on the left and switched by hovering,
+  --fulldark            full dark mode: dark windows, file manager, settings, menus and title bars,
+                        plus the dark taskbar, Start menu and notifications
+  --taskbar             bottom panel, 33 px, full width, Start button without label, flat window buttons,
+                        Start menu laid out like Windows 10 (category icons on the left, switched by
+                        hovering, all apps A-Z, search box, user and power buttons at the bottom),
                         taskbar buttons reorderable by drag-and-drop
   --wallpaper           apply the theme wallpaper on every monitor
   --wallpaper=FILE      apply your own image (jpg/png) on every monitor
@@ -46,6 +49,7 @@ for arg in "$@"; do
   case "$arg" in
     --light)             STYLE=light ;;
     --dark)              STYLE=dark ;;
+    --fulldark)          STYLE=fulldark ;;
     --system)            SYSTEM=1 ;;
     --no-apply)          APPLY=0 ;;
     --taskbar)           TASKBAR=1 ;;
@@ -76,10 +80,12 @@ fi
 
 echo "› Copying files…"
 mkdir -p "$THEMES" "$ICONS" "$BACKGROUNDS"
-rm -rf "$THEMES/$NAME" "$THEMES/$NAME-light" "$ICONS/$NAME"
+rm -rf "$THEMES/$NAME" "$THEMES/$NAME-light" "$THEMES/$NAME-dark" "$ICONS/$NAME" "$ICONS/$NAME-dark"
 cp -a "$HERE/$NAME" "$THEMES/$NAME"
 cp -a "$HERE/$NAME-light" "$THEMES/$NAME-light"
+cp -a "$HERE/$NAME-dark" "$THEMES/$NAME-dark"
 cp -a "$HERE/$NAME-icons" "$ICONS/$NAME"
+cp -a "$HERE/$NAME-dark-icons" "$ICONS/$NAME-dark"
 cp -a "$HERE/wallpaper/." "$BACKGROUNDS/"
 # Earlier builds shipped an abstract wallpaper that the "Glass" wallpaper replaces
 rm -f "$BACKGROUNDS/$NAME-abstract-1920x1080.jpg" "$BACKGROUNDS/$NAME-abstract-3840x2160.jpg"
@@ -97,13 +103,18 @@ fi
 
 # Network tray icons (nm-applet) are not recolored by GTK: use the set that
 # matches the taskbar style (white glyphs on dark, dark glyphs on light)
-if [ -d "$ICONS/$NAME/panel-variants/$STYLE" ]; then
+# (the full dark mode always has a dark taskbar)
+if [ "$STYLE" = light ]; then PANEL_STYLE=light; else PANEL_STYLE=dark; fi
+if [ -d "$ICONS/$NAME/panel-variants/$PANEL_STYLE" ]; then
   rm -rf "$ICONS/$NAME/scalable/panel"
-  cp -a "$ICONS/$NAME/panel-variants/$STYLE" "$ICONS/$NAME/scalable/panel"
+  cp -a "$ICONS/$NAME/panel-variants/$PANEL_STYLE" "$ICONS/$NAME/scalable/panel"
 fi
-command -v gtk-update-icon-cache >/dev/null && gtk-update-icon-cache -f -t -q "$ICONS/$NAME" || true
-echo "  themes:      $THEMES/$NAME, $THEMES/$NAME-light"
-echo "  icons:       $ICONS/$NAME"
+if command -v gtk-update-icon-cache >/dev/null; then
+  gtk-update-icon-cache -f -t -q "$ICONS/$NAME" || true
+  gtk-update-icon-cache -f -t -q "$ICONS/$NAME-dark" || true
+fi
+echo "  themes:      $THEMES/$NAME, $THEMES/$NAME-light, $THEMES/$NAME-dark"
+echo "  icons:       $ICONS/$NAME, $ICONS/$NAME-dark"
 echo "  wallpapers:  $BACKGROUNDS"
 
 [ "$APPLY" = 1 ] || { echo "Done (settings left unchanged)."; exit 0; }
@@ -129,7 +140,7 @@ save() {  # channel property
   # Never record one of this theme's own values as the "original" (e.g. after a
   # lost backup): restoring it later would point at files the uninstaller removes
   case "$v" in
-    start-here|"$NAME-start-light"|"$NAME"|"$NAME-light"|Dez|*"/$NAME/"*|*"/Dez/"*) v="" ;;
+    start-here|"$NAME-start-light"|"$NAME"|"$NAME-light"|"$NAME-dark"|Dez|*"/$NAME/"*|*"/$NAME-dark/"*|*"/Dez/"*) v="" ;;
   esac
   printf '%s\t%s\t%s\n' "$1" "$2" "$v" >> "$BACKUP"
 }
@@ -139,11 +150,17 @@ set_prop() {  # channel property type value
 }
 
 echo "› Applying theme (backup in $BACKUP)…"
-if [ "$STYLE" = light ]; then GTK_THEME="$NAME-light"; else GTK_THEME="$NAME"; fi
+case "$STYLE" in
+  light)     GTK_THEME="$NAME-light"; ICON_THEME="$NAME";      WM_THEME="$NAME" ;;
+  fulldark)  GTK_THEME="$NAME-dark";  ICON_THEME="$NAME-dark"; WM_THEME="$NAME-dark" ;;
+  *)         GTK_THEME="$NAME";       ICON_THEME="$NAME";      WM_THEME="$NAME" ;;
+esac
 echo "  style: $STYLE"
 set_prop xsettings /Net/ThemeName string "$GTK_THEME"
-set_prop xsettings /Net/IconThemeName string $NAME
-set_prop xfwm4 /general/theme string $NAME
+set_prop xsettings /Net/IconThemeName string "$ICON_THEME"
+set_prop xfwm4 /general/theme string "$WM_THEME"
+# (XFCE 4.18+ also switches the desktop color scheme to dark for themes whose
+# name ends in "-dark", so GTK 4/libadwaita apps and Firefox follow --fulldark)
 set_prop xfwm4 /general/button_layout string "O|HMC"
 set_prop xfwm4 /general/title_alignment string left
 set_prop xfce4-notifyd /theme string "$GTK_THEME"
@@ -193,17 +210,30 @@ if [ "$TASKBAR" = 1 ]; then
   set_prop xfce4-panel $P/background-style uint 0
   save xfce4-panel $P/length
   xfconf-query -c xfce4-panel -p $P/length -s 100 2>/dev/null \
-    || xfconf-query -c xfce4-panel -p $P/length -s 100.0 2>/dev/null || true
+    || xfconf-query -c xfce4-panel -p $P/length -s 100.0 2>/dev/null \
+    || xfconf-query -c xfce4-panel -p $P/length -n -t uint -s 100 2>/dev/null || true
 
   apply_start_icon
-  # Whisker Menu: categories on the left, switch categories by hovering
+  # Whisker Menu laid out like the Windows 10 Start menu: a narrow rail of
+  # category icons on the left (switched by hovering), all applications in
+  # alphabetical order with plain names, then the search box and the user
+  # picture with the settings, lock and power buttons at the bottom
+  WHISKER_SETTINGS="position-categories-alternate:bool:true hover-switch-category:bool:true
+    category-show-name:bool:false category-icon-size:int:1 default-category:int:2 view-mode:int:1
+    launcher-show-description:bool:false launcher-icon-size:int:1
+    position-search-alternate:bool:true position-profile-alternate:bool:true
+    position-commands-alternate:bool:false menu-width:int:400 menu-height:int:640"
   for id in $(xfconf-query -c xfce4-panel -p /plugins -l -v 2>/dev/null | awk '$2=="whiskermenu"{print $1}'); do
-    set_prop xfce4-panel "$id/position-categories-alternate" bool true
-    set_prop xfce4-panel "$id/hover-switch-category" bool true
+    kvs=""
+    for s in $WHISKER_SETTINGS; do
+      k="${s%%:*}"; t="${s#*:}"; t="${t%%:*}"; v="${s##*:}"
+      set_prop xfce4-panel "$id/$k" "$t" "$v"
+      kvs="$kvs $k=$v"
+    done
     rc="${XDG_CONFIG_HOME:-$HOME/.config}/xfce4/panel/whiskermenu-${id##*-}.rc"
     if [ -f "$rc" ]; then   # older Whisker Menu versions keep settings in an rc file
       cp -n "$rc" "$rc.$NAME-backup"
-      for kv in position-categories-alternate=true hover-switch-category=true; do
+      for kv in $kvs; do
         k="${kv%%=*}"
         if grep -q "^$k=" "$rc"; then sed -i "s|^$k=.*|$kv|" "$rc"; else echo "$kv" >> "$rc"; fi
       done
@@ -224,8 +254,8 @@ if [ "$TASKBAR" = 1 ]; then
   [ -f "$USER_CSS" ] && sed -i '/\/\* windows-dez:begin/,/\/\* windows-dez:end \*\//d' "$USER_CSS"
   cat >> "$USER_CSS" <<'CSS'
 /* windows-dez:begin — added by the windows-dez installer, removed by uninstall.sh */
-.tasklist { -XfceTasklist-max-button-length: 150;
-  -XfceTasklist-min-button-length: 150; }
+.tasklist { -XfceTasklist-max-button-length: 140;
+  -XfceTasklist-min-button-length: 140; }
 .tasklist button label { font-size: 8pt; }
 /* windows-dez:end */
 CSS
@@ -236,7 +266,7 @@ elif [ -n "$START_ICON_FILE" ]; then
   apply_start_icon
   restart_panel
 else
-  # Switching between --light and --dark: keep the theme's own Start glyph readable
+  # Switching between --light, --dark and --fulldark: keep the theme's own Start glyph readable
   changed=0
   for id in $(xfconf-query -c xfce4-panel -p /plugins -l -v 2>/dev/null | awk '$2=="whiskermenu" || $2=="applicationsmenu"{print $1}'); do
     cur="$(xfconf-query -c xfce4-panel -p "$id/button-icon" 2>/dev/null || true)"

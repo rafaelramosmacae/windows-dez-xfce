@@ -1,0 +1,289 @@
+/* Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later */
+
+/* ==========================================================================
+   windows-dez-dark — full dark mode (Windows 10 "dark app mode"):
+   windows, file manager, settings dialogs, menus, lists and controls.
+   The taskbar, Start menu and notifications stay as in the regular (dark)
+   theme. Appended to the regular theme at build time; GTK resolves named
+   colors after the whole file is read, so redefining them here recolors
+   every rule above that uses them.
+   ========================================================================== */
+@define-color theme_bg_color          #202020;
+@define-color theme_fg_color          #FFFFFF;
+@define-color theme_base_color        #191919;
+@define-color theme_text_color        #FFFFFF;
+@define-color theme_selected_bg_color #0078D7;
+@define-color theme_selected_fg_color #FFFFFF;
+@define-color insensitive_bg_color    #202020;
+@define-color insensitive_fg_color    #7A7A7A;
+@define-color insensitive_base_color  #262626;
+@define-color theme_unfocused_bg_color #202020;
+@define-color theme_unfocused_fg_color #FFFFFF;
+@define-color theme_unfocused_base_color #191919;
+@define-color theme_unfocused_text_color #FFFFFF;
+@define-color theme_unfocused_selected_bg_color #3A3A3A;
+@define-color theme_unfocused_selected_fg_color #FFFFFF;
+@define-color borders                 #4D4D4D;
+@define-color unfocused_borders       #3A3A3A;
+@define-color warning_color           #FFB900;
+@define-color error_color             #FF4D5A;
+@define-color success_color           #6CCB5F;
+
+@define-color accent_light #4CC2FF;
+@define-color hover_bg     #3A3A3A;
+@define-color press_bg     #4D4D4D;
+@define-color rowsel_bg    #4D4D4D;
+@define-color rowhover_bg  #2D2D2D;
+@define-color menu_bg      #2B2B2B;
+@define-color menu_border  #3F3F3F;
+@define-color menu_hover   #414141;
+@define-color line_color   #3A3A3A;
+
+/* --------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+.view:selected, .view:selected:focus { color: #FFFFFF; }
+label.dim-label, .dim-label { opacity: 0.65; }
+separator { background-color: @line_color; }
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+button {
+  border-color: #555555;
+  background-color: #333333;
+  color: #FFFFFF;
+}
+button:hover { background-color: #3D3D3D; border-color: @accent; }
+button:active, button:checked { background-color: #4D4D4D; border-color: @accent_light; }
+button:disabled { background-color: #2B2B2B; border-color: #3A3A3A; color: @insensitive_fg_color; }
+button.flat:hover, toolbar button:hover, .toolbar button:hover, headerbar button:hover {
+  background-color: @hover_bg;
+  border-color: #4D4D4D;
+}
+button.flat:active, button.flat:checked, toolbar button:active, toolbar button:checked,
+headerbar button:active, headerbar button:checked {
+  background-color: @press_bg;
+  border-color: #666666;
+}
+button.suggested-action, button.default { color: #FFFFFF; }
+button.destructive-action:hover { background-color: #F1707A; }
+
+/* Links: the light accent reads better on dark backgrounds */
+*:link, button.link, button.link:link { color: @accent_light; }
+*:link:hover, button.link:hover { color: #99EBFF; }
+*:visited { color: #C3A6FF; }
+
+/* --------------------------------------------------------------------------
+   Text entries
+   -------------------------------------------------------------------------- */
+entry, spinbutton:not(.vertical) {
+  border-color: #7A7A7A;
+  background-color: #2B2B2B;
+  color: #FFFFFF;
+  caret-color: #FFFFFF;
+}
+entry:hover { border-color: #C8C8C8; }
+entry:disabled { background-color: @insensitive_base_color; border-color: #3A3A3A; }
+entry image { color: #A0A0A0; }
+spinbutton:not(.vertical) button { border-left-color: #3F3F3F; background-color: transparent; }
+
+/* --------------------------------------------------------------------------
+   Combobox
+   -------------------------------------------------------------------------- */
+combobox button.combo, combobox box.linked button {
+  background-color: #333333;
+  border-color: #555555;
+}
+combobox button.combo:hover { background-color: #3D3D3D; border-color: @accent; }
+
+/* --------------------------------------------------------------------------
+   Check boxes, radio buttons and switches
+   -------------------------------------------------------------------------- */
+check, radio { border-color: #DADADA; background-color: #191919; }
+check:hover, radio:hover { border-color: @accent_light; }
+check:checked, check:indeterminate { background-color: @accent; border-color: @accent; color: #FFFFFF; }
+radio:checked {
+  border-color: @accent_light;
+  background-image: radial-gradient(circle, #FFFFFF 0%, #FFFFFF 35%, transparent 40%);
+}
+check:disabled, radio:disabled { border-color: #4D4D4D; background-color: #262626; }
+menuitem check, menuitem radio, modelbutton check, modelbutton radio {
+  border-color: transparent; background-color: transparent;
+}
+menuitem check:checked, modelbutton check:checked { color: #FFFFFF; background-color: transparent; }
+
+switch { border-color: #DADADA; background-color: #191919; }
+switch slider { background-color: #DADADA; }
+switch:hover:not(:checked) { border-color: #FFFFFF; }
+switch:hover:not(:checked) slider { background-color: #FFFFFF; }
+switch:checked { background-color: @accent; border-color: @accent; }
+switch:checked slider { background-color: #FFFFFF; }
+switch:disabled { border-color: #4D4D4D; }
+switch:disabled slider { background-color: #4D4D4D; }
+
+/* --------------------------------------------------------------------------
+   Sliders and progress bars
+   -------------------------------------------------------------------------- */
+scale trough { background-color: #7A7A7A; }
+scale slider:hover { background-color: #FFFFFF; }
+scale slider:active { background-color: #767676; }
+scale:disabled slider, scale:disabled highlight { background-color: #4D4D4D; }
+progressbar trough { background-color: #333333; }
+levelbar block { background-color: #333333; }
+
+/* --------------------------------------------------------------------------
+   Scrollbars (Windows 10 dark: near-black track, grey thumb and arrows)
+   -------------------------------------------------------------------------- */
+scrollbar { background-color: #171717; }
+scrollbar.vertical { border-left-color: #171717; }
+scrollbar.horizontal { border-top-color: #171717; }
+scrollbar slider { background-color: #4D4D4D; }
+scrollbar slider:hover { background-color: #7A7A7A; }
+scrollbar slider:active { background-color: #A6A6A6; }
+scrollbar button { background-color: #171717; color: #A6A6A6; }
+scrollbar button:hover { background-color: #373737; color: #FFFFFF; }
+scrollbar button:active { background-color: #A6A6A6; color: #000000; }
+scrollbar button:disabled { background-color: #171717; color: #4D4D4D; }
+scrollbar.overlay-indicator:not(.dragging):not(.hovering) slider { background-color: #8A8A8A; }
+
+/* --------------------------------------------------------------------------
+   Menus, popovers and tooltips
+   -------------------------------------------------------------------------- */
+menubar, .menubar { background-color: #202020; }
+menubar > menuitem:hover {
+  background-color: @menu_hover;
+  box-shadow: none;
+  color: #FFFFFF;
+}
+menu, .menu, .context-menu {
+  border-color: @menu_border;
+  background-color: @menu_bg;
+  color: #FFFFFF;
+}
+.csd menu, .csd .menu { border-color: @menu_border; }
+menu menuitem { color: #FFFFFF; }
+menu menuitem:hover { background-color: @menu_hover; color: #FFFFFF; }
+menu menuitem:disabled, menu menuitem:disabled label { color: #7A7A7A; }
+menu menuitem accelerator { color: alpha(#FFFFFF, 0.6); }
+menu separator { background-color: @menu_border; }
+menu > arrow { background-color: @menu_bg; }
+
+popover, popover.background {
+  border-color: @menu_border;
+  background-color: @menu_bg;
+  color: #FFFFFF;
+  box-shadow: 0 4px 10px alpha(#000000, 0.55);
+}
+popover modelbutton:hover { background-color: @menu_hover; }
+
+tooltip, tooltip.background, .tooltip {
+  border-color: #767676;
+  background-color: #2B2B2B;
+  color: #FFFFFF;
+}
+tooltip * { color: #FFFFFF; }
+
+/* --------------------------------------------------------------------------
+   Tabs
+   -------------------------------------------------------------------------- */
+notebook { background-color: #191919; }
+notebook > header { background-color: #202020; box-shadow: inset 0 -1px @line_color; }
+notebook > header tab { color: #C8C8C8; }
+notebook > header tab:hover { background-color: #2D2D2D; color: #FFFFFF; }
+notebook > header tab:checked {
+  background-color: #191919;
+  color: #FFFFFF;
+  box-shadow: inset 0 -2px @accent, inset 1px 0 @line_color, inset -1px 0 @line_color;
+}
+notebook > header.bottom tab:checked { box-shadow: inset 0 2px @accent; }
+notebook > header.left tab:checked { box-shadow: inset 2px 0 @accent; }
+notebook > header.right tab:checked { box-shadow: inset -2px 0 @accent; }
+notebook > stack:not(:only-child) { border-color: @line_color; }
+
+/* --------------------------------------------------------------------------
+   Lists, trees and column headers (File Explorer dark mode)
+   -------------------------------------------------------------------------- */
+iconview:selected, iconview.view:selected, treeview.view:selected,
+iconview.view:selected:focus, treeview.view:selected:focus { background-color: @rowsel_bg; color: #FFFFFF; }
+treeview.view:selected { color: #FFFFFF; }
+treeview.view:selected:hover { background-color: #5A5A5A; box-shadow: inset 0 0 0 1px #777777; }
+treeview.view:backdrop:selected { background-color: #3A3A3A; }
+treeview.view.expander { color: #A0A0A0; }
+treeview.view.expander:hover { color: @accent_light; }
+
+treeview.view header button, header.button, column-header button {
+  border-right-color: @line_color;
+  background-color: #191919;
+  color: #CCCCCC;
+}
+treeview.view header button:hover { background-color: #2D2D2D; color: #FFFFFF; }
+treeview.view header button:active { background-color: #3A3A3A; }
+
+list, listview { background-color: #191919; }
+list row:selected, row:selected { background-color: @rowsel_bg; color: #FFFFFF; }
+list row:selected label { color: #FFFFFF; }
+
+.sidebar, placessidebar, placessidebar list, .shortcuts-pane, .shortcuts-pane treeview.view {
+  background-color: #191919;
+}
+placessidebar row:selected, .sidebar .view:selected, .shortcuts-pane treeview.view:selected {
+  background-color: @rowsel_bg;
+  color: #FFFFFF;
+}
+
+/* --------------------------------------------------------------------------
+   Toolbars, path bar, status bar, info bars
+   -------------------------------------------------------------------------- */
+toolbar, .toolbar, .primary-toolbar { background-color: #202020; border-bottom-color: #2B2B2B; }
+statusbar, .statusbar { background-color: #191919; border-top-color: #2B2B2B; color: #CCCCCC; }
+statusbar frame > border, .statusbar frame > border { border-color: #2E2E2E; }
+.path-bar button:hover, .location-button:hover { background-color: @hover_bg; border-color: #4D4D4D; }
+.path-bar button:checked, .location-button:checked { background-color: @press_bg; border-color: #666666; }
+toolbar button image, .toolbar button image, .path-bar button image,
+.location-button image { color: #E0E0E0; }
+toolbar button:disabled image { color: #5A5A5A; }
+
+infobar.info > revealer > box { background-color: #1F3A50; color: #FFFFFF; }
+infobar.warning > revealer > box { background-color: #433519; color: #FFFFFF; }
+infobar.error > revealer > box { background-color: #442726; color: #FFFFFF; }
+infobar.question > revealer > box { background-color: #1F3A50; color: #FFFFFF; }
+
+/* --------------------------------------------------------------------------
+   Title bars (CSD) and dialogs
+   -------------------------------------------------------------------------- */
+headerbar, .titlebar:not(headerbar) { background-color: #202020; color: #FFFFFF; }
+headerbar:backdrop, .titlebar:backdrop { background-color: #2B2B2B; color: #8A8A8A; }
+headerbar button.titlebutton { color: #FFFFFF; }
+headerbar button.titlebutton:hover { background-color: #333333; }
+headerbar button.titlebutton:active { background-color: #4D4D4D; }
+headerbar button.titlebutton.close:hover { background-color: #E81123; color: #FFFFFF; }
+window.csd:backdrop { box-shadow: 0 0 0 1px #3F3F3F, 0 4px 10px alpha(#000000, 0.45); }
+decoration:backdrop { box-shadow: 0 0 0 1px #3F3F3F, 0 4px 10px alpha(#000000, 0.45); }
+
+dialog .dialog-action-area, messagedialog .dialog-action-area,
+dialog .dialog-action-box { background-color: #202020; border-top-color: #2B2B2B; }
+
+calendar { border-color: @line_color; background-color: #191919; color: #FFFFFF; }
+calendar.header { background-color: #191919; }
+calendar.button { color: #CCCCCC; }
+calendar:indeterminate { color: #6A6A6A; }
+
+frame > border, .frame { border-color: @line_color; }
+scrolledwindow.frame { border-color: @line_color; }
+paned > separator { background-color: #2B2B2B; }
+expander title:hover > arrow { color: @accent_light; }
+colorswatch:hover { box-shadow: inset 0 0 0 2px #FFFFFF; }
+
+/* --------------------------------------------------------------------------
+   Thunar and other XFCE applications
+   -------------------------------------------------------------------------- */
+.thunar toolbar { background-color: #202020; }
+.thunar .standard-view .view:selected { background-color: @rowsel_bg; color: #FFFFFF; }
+.thunar .standard-view iconview:selected { box-shadow: inset 0 0 0 1px #777777; }
+.thunar scrolledwindow.sidebar { border-right-color: #2B2B2B; }
+
+/* XFCE Settings Manager: category labels and the search entry */
+.xfce4-settings-manager label.dim-label { color: #AAAAAA; }
+
+/* Desktop icons keep their white labels on the wallpaper (rules above) */

@@ -2,6 +2,20 @@
 
 Windows Dez — by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 
+## 1.2.0 — 2026-10-19
+
+- New full dark mode (`--fulldark`), as requested on xfce-look: besides the dark taskbar, Start menu and notifications, application windows are dark too — Thunar, the XFCE settings dialogs, Mousepad, menus, dialogs, lists, tabs, entries, buttons, check boxes, switches and scrollbars — in the style of the Windows 10 dark app mode
+- New `windows-dez-dark` theme (GTK 3, GTK 2, notifications) with its own xfwm4 window borders: dark title bars, white title and buttons, blue border on the active window
+- New `windows-dez-dark` icon theme: the thin-line toolbar and menu icons are drawn light, and icons that are not part of the theme fall back to elementary-xfce-dark
+- On XFCE 4.18 and later, the desktop color scheme also turns dark with `--fulldark` (XFCE does this for themes whose name ends in `-dark`), so GTK 4/libadwaita apps and Firefox follow the dark mode
+- Start menu laid out like the Windows 10 one (`--taskbar` and `--full`): a 72 px rail of category icons (22 px) on the left, all applications from A to Z with plain names, 24 px icons and 8 pt text, the search box below them, and the user picture with the settings, lock and power buttons at the bottom
+- New thin white glyphs for the Start menu settings, lock, log out, restart, shut down, switch user, suspend and hibernate buttons (dark in the light style)
+- Scrollbar arrow buttons now use thin "boomerang" chevrons like Windows 10, instead of solid triangles
+- The divider between side pane and file view (Thunar and other split windows) is now a plain 1 px line instead of a dotted one, and the frame around the status bar text is a bit lighter
+- Taskbar window buttons are now 140 px wide (were 150 px)
+- `--taskbar` now also sets the panel length to 100% on panels where that setting did not exist yet
+- Fixed: the installer help and the README described the window list as "icon-only"; it shows icons and labels
+
 ## 1.0.1 — 2026-10-16
 
 - New light style (`--light`): light taskbar, Start menu, panel menus and notifications inspired by Windows 10 light mode, with a dark Start button glyph. `--dark` stays the default

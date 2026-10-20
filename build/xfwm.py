@@ -1,10 +1,12 @@
 # Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later
 """Generates the PNG pieces of the windows-dez xfwm4 theme.
-Usage: python3 xfwm.py OUTPUT_DIR"""
+Usage: python3 xfwm.py OUTPUT_DIR [--dark]
+       --dark  dark title bars, for the windows-dez-dark (full dark mode) theme"""
 import os, sys
 from PIL import Image, ImageDraw
 
 OUT = sys.argv[1]
+DARK = "--dark" in sys.argv[2:]
 os.makedirs(OUT, exist_ok=True)
 
 H = 30          # title bar height
@@ -13,12 +15,17 @@ SIDE = 4        # espessura das bordas laterais/inferior
 ACC = (0, 120, 215, 255)       # borda da janela ativa
 INA = (170, 170, 170, 255)     # borda da janela inativa
 WHITE = (255, 255, 255, 255)
+BAR_A = BAR_I = WHITE          # title bar background (active / inactive)
+if DARK:
+    INA = (85, 85, 85, 255)
+    BAR_A = (32, 32, 32, 255)      # #202020
+    BAR_I = (43, 43, 43, 255)      # #2B2B2B
 
 def save(img, name):
     img.save(os.path.join(OUT, name + ".png"))
 
 # ---------- title bar and borders ----------
-for state, border in (("active", ACC), ("inactive", INA)):
+for state, border, WHITE in (("active", ACC, BAR_A), ("inactive", INA, BAR_I)):
     # title pieces: 1px border on top, white below
     t = Image.new("RGBA", (1, H), WHITE)
     t.putpixel((0, 0), border)
@@ -98,34 +105,49 @@ HOV = (229, 229, 229, 255)
 PRS = (202, 202, 202, 255)
 RED = (232, 17, 35, 255)
 RED2 = (241, 112, 122, 255)
+WHITE = (255, 255, 255, 255)
+if DARK:
+    GREY = (138, 138, 138, 255)
+    HOV = (51, 51, 51, 255)
+    PRS = (77, 77, 77, 255)
+FG_A = WHITE if DARK else BLACK
 
 kinds = ["close", "maximize", "maximize-toggled", "hide", "shade",
          "shade-toggled", "stick", "stick-toggled", "menu"]
 for k in kinds:
     w = 30 if k == "menu" else BW
-    hov, prs, fg_h = (RED, RED2, WHITE) if k == "close" else (HOV, PRS, BLACK)
+    hov, prs, fg_h = (RED, RED2, WHITE) if k == "close" else (HOV, PRS, FG_A)
     variants = {
-        "active":   (WHITE, BLACK, ACC),
-        "inactive": (WHITE, GREY, INA),
+        "active":   (BAR_A, FG_A, ACC),
+        "inactive": (BAR_I, GREY, INA),
         "prelight": (hov, fg_h, ACC),
         "pressed":  (prs, fg_h, ACC),
     }
     for st, (bg, fg, border) in variants.items():
         if k == "menu":
-            img = Image.new("RGBA", (w, H), WHITE)
+            img = Image.new("RGBA", (w, H), BAR_I if st == "inactive" else BAR_A)
         else:
             img = button(k, bg, fg)
         save(with_top(img, border), f"{k}-{st}")
 
 # ---------- themerc ----------
-with open(os.path.join(OUT, "themerc"), "w") as f:
-    f.write("""# Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later
-# windows-dez — xfwm4
+if DARK:
+    head = """# windows-dez-dark — xfwm4 (full dark mode)
+active_text_color=#FFFFFF
+inactive_text_color=#8A8A8A
+active_text_shadow_color=#202020
+inactive_text_shadow_color=#2B2B2B
+"""
+else:
+    head = """# windows-dez — xfwm4
 active_text_color=#000000
 inactive_text_color=#999999
 active_text_shadow_color=#FFFFFF
 inactive_text_shadow_color=#FFFFFF
-title_shadow_active=false
+"""
+with open(os.path.join(OUT, "themerc"), "w") as f:
+    f.write("""# Windows Dez — (c) 2026 Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — GPL-3.0-or-later
+""" + head + """title_shadow_active=false
 title_shadow_inactive=false
 title_alignment=left
 full_width_title=true
