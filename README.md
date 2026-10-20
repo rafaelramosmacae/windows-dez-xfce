@@ -20,9 +20,12 @@ A complete, original theme for XFCE 4.16+ with the flat look of Windows 10:
 |---|---|
 | ![Windows](previews/windows.png) | ![Icons](previews/icons.png) |
 
-| Full dark mode (`--fulldark`) |
-|---|
-| ![Full dark mode](previews/full-dark.png) |
+<div align="center">
+<table>
+<tr><th>Full dark mode (<code>--fulldark</code>)</th></tr>
+<tr><td><img src="previews/full-dark.png" alt="Full dark mode" width="420"></td></tr>
+</table>
+</div>
 
 ## Screenshots
 
@@ -36,9 +39,12 @@ Xubuntu 26.04 with XFCE 4.20:
 |---|---|
 | ![Dark taskbar](previews/windows-dez-print3.png) | ![Light taskbar](previews/windows-dez-print4.png) |
 
-| Full dark mode (`--fulldark`) with apps |
-|---|
-| ![Full dark mode with apps](previews/windows-dez-print5.png) |
+<div align="center">
+<table>
+<tr><th>Full dark mode (<code>--fulldark</code>) with apps</th></tr>
+<tr><td><img src="previews/windows-dez-print5.png" alt="Full dark mode with apps" width="420"></td></tr>
+</table>
+</div>
 
 ## What's inside
 
