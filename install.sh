@@ -5,7 +5,7 @@
 set -euo pipefail
 
 NAME=windows-dez
-VERSION=1.2.0
+VERSION=1.2.1
 
 restart_panel() {
   pgrep -x xfce4-panel >/dev/null || return 0

@@ -740,8 +740,19 @@ XfdesktopIconView.view.rubberband, .xfdesktop-icon-view.view.rubberband {
 
 /* Thunar */
 .thunar toolbar { background-color: #FFFFFF; }
-.thunar .standard-view .view:selected { background-color: @rowsel_bg; color: #000000; }
-.thunar .standard-view iconview:selected { box-shadow: inset 0 0 0 1px #99D1FF; }
+/* Thunar file views (icons, detailed list, compact list): selected items in the
+   full accent blue with white text, like Windows 10 */
+.thunar .standard-view .view:selected,
+.thunar .standard-view .view:selected:focus,
+.thunar .standard-view iconview:selected,
+.thunar .standard-view iconview.view:selected:focus,
+.thunar .standard-view treeview.view:selected,
+.thunar .standard-view treeview.view:selected:focus,
+.thunar .standard-view treeview.view:selected:hover {
+  background-color: @accent;
+  color: #FFFFFF;
+  box-shadow: none;
+}
 .thunar scrolledwindow.sidebar { border-right: 1px solid #F0F0F0; }
 
 /* XFCE Terminal */
@@ -1146,8 +1157,6 @@ colorswatch:hover { box-shadow: inset 0 0 0 2px #FFFFFF; }
    Thunar and other XFCE applications
    -------------------------------------------------------------------------- */
 .thunar toolbar { background-color: #202020; }
-.thunar .standard-view .view:selected { background-color: @rowsel_bg; color: #FFFFFF; }
-.thunar .standard-view iconview:selected { box-shadow: inset 0 0 0 1px #777777; }
 .thunar scrolledwindow.sidebar { border-right-color: #2B2B2B; }
 
 /* XFCE Settings Manager: category labels and the search entry */

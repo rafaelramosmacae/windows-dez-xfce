@@ -279,8 +279,6 @@ colorswatch:hover { box-shadow: inset 0 0 0 2px #FFFFFF; }
    Thunar and other XFCE applications
    -------------------------------------------------------------------------- */
 .thunar toolbar { background-color: #202020; }
-.thunar .standard-view .view:selected { background-color: @rowsel_bg; color: #FFFFFF; }
-.thunar .standard-view iconview:selected { box-shadow: inset 0 0 0 1px #777777; }
 .thunar scrolledwindow.sidebar { border-right-color: #2B2B2B; }
 
 /* XFCE Settings Manager: category labels and the search entry */

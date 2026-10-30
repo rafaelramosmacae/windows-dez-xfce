@@ -2,6 +2,10 @@
 
 Windows Dez — by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 
+## 1.2.1 — 2026-10-30
+
+- Thunar: selected files and folders now use the full Windows 10 blue with white text in every view (icons, detailed list and compact list) and in every style. On XFCE 4.20 the selection was drawn in strong blue with black text, which was hard to read
+
 ## 1.2.0 — 2026-10-19
 
 - New full dark mode (`--fulldark`), as requested on xfce-look: besides the dark taskbar, Start menu and notifications, application windows are dark too — Thunar, the XFCE settings dialogs, Mousepad, menus, dialogs, lists, tabs, entries, buttons, check boxes, switches and scrollbars — in the style of the Windows 10 dark app mode

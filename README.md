@@ -64,8 +64,8 @@ Xubuntu 26.04 with XFCE 4.20:
 ## Installation
 
 ```bash
-tar xzf windows-dez-xfce-1.2.0.tar.gz
-cd windows-dez-xfce-1.2.0
+tar xzf windows-dez-xfce-1.2.1.tar.gz
+cd windows-dez-xfce-1.2.1
 ./install.sh --full                # dark taskbar and Start menu (default)
 ./install.sh --full --light        # light taskbar and Start menu
 ./install.sh --full --fulldark    # full dark mode: dark windows and applications too
