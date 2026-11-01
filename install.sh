@@ -5,7 +5,7 @@
 set -euo pipefail
 
 NAME=windows-dez
-VERSION=1.2.1
+VERSION=1.2.2
 
 restart_panel() {
   pgrep -x xfce4-panel >/dev/null || return 0
@@ -294,12 +294,29 @@ if [ "$WALLPAPER" = 1 ]; then
   else
     IMG="$BACKGROUNDS/$NAME-glass-3840x2160.jpg"
   fi
-  PROPS="$(xfconf-query -c xfce4-desktop -l 2>/dev/null | grep -E '/last-image$' || true)"
-  if [ -z "$PROPS" ] && command -v xrandr >/dev/null; then
-    for m in $(xrandr --listactivemonitors 2>/dev/null | awk 'NR>1{print $NF}'); do
-      for w in 0 1 2 3; do PROPS="$PROPS /backdrop/screen0/monitor$m/workspace$w/last-image"; done
+  # xfdesktop (4.12 and later) names these settings after each monitor's output
+  # name, e.g. /backdrop/screen0/monitorVirtual-1/workspace0/last-image. Fresh
+  # installs (e.g. Debian) may only have older names such as "monitor0", which
+  # it ignores, so always add the connected outputs: from xrandr, or from the
+  # kernel when xrandr is not installed. Existing last-image settings are kept.
+  MONITORS=""
+  if command -v xrandr >/dev/null; then
+    MONITORS="$(xrandr --listactivemonitors 2>/dev/null | awk 'NR>1{print $NF}' || true)"
+    [ -n "$MONITORS" ] || MONITORS="$(xrandr --query 2>/dev/null | awk '$2=="connected"{print $1}' || true)"
+  fi
+  if [ -z "$MONITORS" ]; then
+    for s in /sys/class/drm/card*-*/status; do
+      [ -f "$s" ] && [ "$(cat "$s" 2>/dev/null)" = connected ] || continue
+      m="$(basename "$(dirname "$s")")"; m="${m#card*-}"
+      MONITORS="$MONITORS $m ${m/-A-/-}"   # the X server calls HDMI-A-1 "HDMI-1"
     done
   fi
+  PROPS="$(xfconf-query -c xfce4-desktop -l 2>/dev/null | grep -E '/last-image$' || true)"
+  for m in $MONITORS; do
+    for w in 0 1 2 3; do PROPS="$PROPS /backdrop/screen0/monitor$m/workspace$w/last-image"; done
+  done
+  PROPS="$(printf '%s\n' $PROPS | sort -u)"
+  [ -n "$MONITORS" ] && echo "  monitors: $(echo $MONITORS | tr ' ' '\n' | sort -u | tr '\n' ' ')"
   for p in $PROPS; do
     set_prop xfce4-desktop "$p" string "$IMG"
     set_prop xfce4-desktop "${p%/last-image}/image-style" int 5

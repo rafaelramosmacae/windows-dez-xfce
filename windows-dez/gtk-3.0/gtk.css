@@ -554,15 +554,33 @@ headerbar button.titlebutton:active { background-color: #CACACA; }
 headerbar button.titlebutton.close:hover { background-color: #E81123; color: #FFFFFF; }
 headerbar button.titlebutton.close:active { background-color: #F1707A; color: #FFFFFF; }
 
-window.csd, window.csd.background {
-  border-radius: 0;
-  box-shadow: 0 0 0 1px alpha(@accent, 0.9), 0 6px 18px alpha(#000000, 0.30);
-}
-window.csd:backdrop { box-shadow: 0 0 0 1px #AAAAAA, 0 4px 10px alpha(#000000, 0.18); }
+/* Client-side decorations (header-bar apps, Firefox with its own title bar).
+   GTK derives the invisible frame around these windows (shadow and resize area)
+   from the decoration shadow, so it must keep the same size when the window is
+   active or not: only the colors change. A shadow that shrank on backdrop made
+   Firefox grow into the freed space whenever it lost focus. The margin is the
+   part of that frame GTK lets you grab to resize the window (without it the
+   resize cursors never showed up). */
+window.csd, window.csd.background { border-radius: 0; box-shadow: none; }
 window.solid-csd, window.maximized, window.fullscreen, window.tiled { box-shadow: none; border-radius: 0; }
 
-decoration { border-radius: 0; box-shadow: 0 0 0 1px @accent, 0 6px 18px alpha(#000000, 0.3); }
-decoration:backdrop { box-shadow: 0 0 0 1px #AAAAAA, 0 4px 10px alpha(#000000, 0.18); }
+decoration {
+  border-radius: 0;
+  margin: 10px;
+  box-shadow: 0 0 0 1px @accent, 0 4px 14px alpha(#000000, 0.30);
+}
+decoration:backdrop { box-shadow: 0 0 0 1px #AAAAAA, 0 4px 14px alpha(#000000, 0.15); }
+.maximized decoration, .fullscreen decoration { box-shadow: none; border-radius: 0; }
+.tiled decoration, .tiled-top decoration, .tiled-right decoration,
+.tiled-bottom decoration, .tiled-left decoration { box-shadow: 0 0 0 1px #AAAAAA; border-radius: 0; }
+/* Without a compositor (no shadows), a 4 px border gives the window edges to
+   grab for resizing */
+.solid-csd decoration {
+  margin: 0;
+  padding: 4px;
+  border-radius: 0;
+  box-shadow: inset 0 0 0 4px #F0F0F0, inset 0 0 0 5px #AAAAAA;
+}
 
 dialog .dialog-action-area, messagedialog .dialog-action-area,
 dialog .dialog-action-box {

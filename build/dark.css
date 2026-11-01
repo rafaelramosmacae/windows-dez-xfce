@@ -258,8 +258,8 @@ headerbar button.titlebutton { color: #FFFFFF; }
 headerbar button.titlebutton:hover { background-color: #333333; }
 headerbar button.titlebutton:active { background-color: #4D4D4D; }
 headerbar button.titlebutton.close:hover { background-color: #E81123; color: #FFFFFF; }
-window.csd:backdrop { box-shadow: 0 0 0 1px #3F3F3F, 0 4px 10px alpha(#000000, 0.45); }
-decoration:backdrop { box-shadow: 0 0 0 1px #3F3F3F, 0 4px 10px alpha(#000000, 0.45); }
+decoration:backdrop { box-shadow: 0 0 0 1px #3F3F3F, 0 4px 14px alpha(#000000, 0.45); }
+.solid-csd decoration { box-shadow: inset 0 0 0 4px #202020, inset 0 0 0 5px #3F3F3F; }
 
 dialog .dialog-action-area, messagedialog .dialog-action-area,
 dialog .dialog-action-box { background-color: #202020; border-top-color: #2B2B2B; }

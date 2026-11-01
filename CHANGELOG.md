@@ -2,6 +2,11 @@
 
 Windows Dez — by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 
+## 1.2.2 — 2026-11-01
+
+- Fixed: windows with client-side decorations (Firefox with its own title bar, header-bar apps) grew when they lost focus and could not be resized from their edges. Reported on Debian 13 with XFCE 4.20 and the Debian Firefox package. The window shadow now keeps the same size when the window is active or not, and the window keeps a 10 px edge to grab for resizing (4 px when no compositor is running)
+- Fixed: `--wallpaper` (and `--full`) did not change the wallpaper on fresh Debian installs. The installer now always writes the setting for each connected monitor by its output name (e.g. `monitorVirtual-1`), as xfdesktop expects, finding the monitors with xrandr or, if xrandr is missing, from the kernel
+
 ## 1.2.1 — 2026-10-30
 
 - Thunar: selected files and folders now use the full Windows 10 blue with white text in every view (icons, detailed list and compact list) and in every style. On XFCE 4.20 the selection was drawn in strong blue with black text, which was hard to read
