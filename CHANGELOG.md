@@ -5,6 +5,7 @@ Windows Dez — by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 ## 1.2.1 — 2026-10-30
 
 - Thunar: selected files and folders now use the full Windows 10 blue with white text in every view (icons, detailed list and compact list) and in every style. On XFCE 4.20 the selection was drawn in strong blue with black text, which was hard to read
+- Thunar on XFCE 4.20: when the window is not focused, the selection is now a mid grey that the white text stays readable on (it was an almost white blue)
 
 ## 1.2.0 — 2026-10-19
 

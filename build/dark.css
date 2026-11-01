@@ -21,7 +21,7 @@
 @define-color theme_unfocused_fg_color #FFFFFF;
 @define-color theme_unfocused_base_color #191919;
 @define-color theme_unfocused_text_color #FFFFFF;
-@define-color theme_unfocused_selected_bg_color #3A3A3A;
+@define-color theme_unfocused_selected_bg_color #6E6E6E;  /* 50% over #191919 = #434343 (Thunar 4.20) */
 @define-color theme_unfocused_selected_fg_color #FFFFFF;
 @define-color borders                 #4D4D4D;
 @define-color unfocused_borders       #3A3A3A;
