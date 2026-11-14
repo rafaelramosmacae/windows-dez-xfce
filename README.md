@@ -7,31 +7,16 @@ A complete, original theme for XFCE 4.16+ with the flat look of Windows 10:
 - white windows with a 1 px blue border and wide title buttons (close turns red on hover)
 - classic, always-visible scrollbars with arrow buttons at both ends
 - dark taskbar with a blue underline on the active window, dark Start menu (Whisker Menu) and dark notifications — or the same in **light**, like Windows 10 light mode
-- **full dark mode** (`--fulldark`): dark windows, file manager, settings, dialogs, menus and title bars, like the Windows 10 dark app mode
+- **full dark mode**: dark windows, file manager, settings, dialogs, menus and title bars, like the Windows 10 dark app mode
 - a Start menu laid out like the Windows 10 one: a narrow rail of category icons, all applications from A to Z, and the search box, user picture and power buttons at the bottom
 - 232 hand-drawn icons, including thin-line navigation glyphs
 - an original wallpaper, "Glass": the four diamonds of the Start button as glowing glass panes
-
-| Dark (default) | Light (`--light`) |
-|---|---|
-| ![Dark](previews/start-menu.png) | ![Light](previews/start-menu-light.png) |
-
-| Windows | Icons |
-|---|---|
-| ![Windows](previews/windows.png) | ![Icons](previews/icons.png) |
-
-<div align="center">
-<table>
-<tr><th>Full dark mode (<code>--fulldark</code>)</th></tr>
-<tr><td><img src="previews/full-dark.png" alt="Full dark mode" width="420"></td></tr>
-</table>
-</div>
 
 ## Screenshots
 
 Xubuntu 26.04 with XFCE 4.20:
 
-| Dark Start menu | Light Start menu |
+| Dark Start menu (default) | Light Start menu |
 |---|---|
 | ![Dark Start menu](previews/windows-dez-print1.png) | ![Light Start menu](previews/windows-dez-print2.png) |
 
@@ -41,7 +26,7 @@ Xubuntu 26.04 with XFCE 4.20:
 
 <div align="center">
 <table>
-<tr><th>Full dark mode (<code>--fulldark</code>) with apps</th></tr>
+<tr><th>Full dark mode with apps</th></tr>
 <tr><td><img src="previews/windows-dez-print5.png" alt="Full dark mode with apps" width="420"></td></tr>
 </table>
 </div>
@@ -64,21 +49,29 @@ Xubuntu 26.04 with XFCE 4.20:
 ## Installation
 
 ```bash
-tar xzf windows-dez-xfce-1.2.2.tar.gz
-cd windows-dez-xfce-1.2.2
-./install.sh --full                # dark taskbar and Start menu (default)
-./install.sh --full --light        # light taskbar and Start menu
-./install.sh --full --fulldark    # full dark mode: dark windows and applications too
+tar xzf windows-dez-xfce-1.2.3.tar.gz
+cd windows-dez-xfce-1.2.3
+./install.sh
 ```
 
-Log out and back in afterwards so every application picks up the theme.
-You can switch between the styles at any time by running `./install.sh --light`, `./install.sh --dark` or `./install.sh --fulldark` again.
+The installer asks a few questions; answer each one with its number and press Enter (Enter alone picks the default):
 
-### Installer options
+1. **Style:** dark taskbar and Start menu (default), light taskbar and Start menu, or full dark mode (windows, file manager and settings dark too)
+2. **What to install:** complete (theme, Windows 10 style taskbar and Start menu, wallpaper and desktop icons, recommended), theme only (keeps your panel and wallpaper), custom (asks about each part), or copy the files only
+3. **Wallpaper** and **Start button:** the theme's own or an image of yours
+4. **Install for:** only you, or all users (run `sudo ./install.sh` for that)
+
+It then shows a summary and asks for confirmation before changing anything.
+Log out and back in afterwards so every application picks up the theme.
+To switch styles later, run `./install.sh` again and pick another one.
+
+### Options for scripts
+
+The installer also accepts options instead of questions, for scripts and advanced use (`./install.sh --help`):
 
 | Option | What it does |
 |---|---|
-| *(none)* | Installs and applies the GTK theme, icons, window borders, notifications and font, and turns off overlay scrollbars so the classic scrollbars are always visible |
+| `--theme-only` | Installs and applies only the GTK theme, icons, window borders, notifications and font, and turns off overlay scrollbars so the classic scrollbars are always visible |
 | `--dark` | Dark taskbar, Start menu and notifications (default) |
 | `--light` | Light taskbar, Start menu and notifications |
 | `--fulldark` | Full dark mode: dark windows, file manager, settings, dialogs, menus and title bars, plus the dark taskbar, Start menu and notifications. On XFCE 4.18 and later the desktop color scheme turns dark too, so GTK 4/libadwaita apps and Firefox follow it |
@@ -98,6 +91,8 @@ The installer saves your previous settings to `~/.config/windows-dez/backup.tsv`
 
 ### Using your own images
 
+Pick "My own image" for the wallpaper or the Start button in the installer and type the file's path, or use the options:
+
 ```bash
 ./install.sh --full --wallpaper=~/Pictures/my-wallpaper.jpg --start-icon=~/Pictures/my-start.svg
 ```
@@ -108,7 +103,7 @@ Images are copied into the theme folders, so they keep working even if you delet
 
 - **Panel layout:** Whisker Menu · Launchers · Window Buttons · Separator (expand) · Notification Area · Clock · Show Desktop. Set it up in *Settings › Panel › Items*.
 - **Whisker Menu:** install `xfce4-whiskermenu-plugin` if you don't have it. The *Docklike Taskbar* plugin (`xfce4-docklike-plugin`) is styled too.
-- **Start menu layout:** `--taskbar` (and `--full`) arrange the Whisker Menu like the Windows 10 Start menu: category icons in a 72 px rail on the left (switched by hovering), all applications from A to Z with plain names and 24 px icons, the search box below them, and the user picture with the settings, lock and power buttons at the bottom (400×640 px). Any of this can be changed in the Whisker Menu properties, and `uninstall.sh` restores your previous layout. Live tiles are not possible with the Whisker Menu.
+- **Start menu layout:** the complete installation (or `--taskbar`) arranges the Whisker Menu like the Windows 10 Start menu: category icons in a 72 px rail on the left (switched by hovering), all applications from A to Z with plain names and 24 px icons, the search box below them, and the user picture with the settings, lock and power buttons at the bottom (400×640 px). Any of this can be changed in the Whisker Menu properties, and `uninstall.sh` restores your previous layout. Live tiles are not possible with the Whisker Menu.
 - **Compositing:** enable it in *Window Manager Tweaks › Compositor* for window shadows and a translucent taskbar.
 - **Font:** the installer uses *Segoe UI* if it is installed, otherwise *Noto Sans* or *Open Sans*, at size 9.
 
@@ -116,7 +111,7 @@ Images are copied into the theme folders, so they keep working even if you delet
 
 - Tested on XFCE 4.18 (Ubuntu/Xubuntu 24.04) and on Xubuntu 26.04 with XFCE 4.20 (xfwm4, xfce4-panel, Thunar, Mousepad, Whisker Menu); the CSS is validated with GTK 3's own parser.
 - The icons need GTK's SVG loader (`librsvg2-common` on Debian/Ubuntu, `librsvg2` on Fedora, `librsvg` on Arch), which virtually every distribution ships.
-- GTK 4/libadwaita (GNOME) apps and Snap apps such as Firefox on Ubuntu ignore GTK themes and keep their own look. With `--fulldark` on XFCE 4.18 and later they switch to their own dark look, because XFCE sets the desktop color scheme to dark for themes whose name ends in `-dark`.
+- GTK 4/libadwaita (GNOME) apps and Snap apps such as Firefox on Ubuntu ignore GTK themes and keep their own look. In the full dark mode on XFCE 4.18 and later they switch to their own dark look, because XFCE sets the desktop color scheme to dark for themes whose name ends in `-dark`.
 - In the full dark mode, apps that draw their own content (LibreOffice documents, web pages, terminals) may keep their own colors; most of them have a dark option in their preferences.
 - Tray icons come from the inherited Adwaita theme; they are symbolic and turn white on the dark taskbar.
 

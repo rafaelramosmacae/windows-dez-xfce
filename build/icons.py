@@ -124,15 +124,18 @@ import trash
 I["user-trash"] = ("places", trash.bin_svg(False))
 I["user-trash-full"] = ("places", trash.bin_svg(True))
 
-# Start button glyph (original design)
-I["start-here"] = ("places", svg(
-    "".join(f'<path d="M{cx} {cy-8}l8 8-8 8-8-8z" fill="#fff"/>'
-            for cx, cy in ((24, 13), (13, 24), (35, 24), (24, 35)))))
+# Start button glyph (original design): four diamonds around the center,
+# D = distance of each diamond's center from the icon's center, H = half its
+# diagonal; the gap between neighbours is sqrt(2) * (D - H) = 2.8 px at 48 px
+START_D, START_H = 10.5, 8.5
+def start_glyph(fill):
+    return svg("".join(
+        f'<path d="M{cx:g} {cy - START_H:g}l{START_H:g} {START_H:g}-{START_H:g} {START_H:g}-{START_H:g}-{START_H:g}z" fill="{fill}"/>'
+        for cx, cy in ((24, 24 - START_D), (24 - START_D, 24), (24 + START_D, 24), (24, 24 + START_D))))
 
+I["start-here"] = ("places", start_glyph("#fff"))
 # Start button glyph for the light taskbar (same design, dark fill)
-I["windows-dez-start-light"] = ("places", svg(
-    "".join(f'<path d="M{cx} {cy-8}l8 8-8 8-8-8z" fill="#1F1F1F"/>'
-            for cx, cy in ((24, 13), (13, 24), (35, 24), (24, 35)))))
+I["windows-dez-start-light"] = ("places", start_glyph("#1F1F1F"))
 
 # Devices
 monitor = (f'<rect x="3.5" y="7" width="41" height="27" fill="#3A3A3A"/>'

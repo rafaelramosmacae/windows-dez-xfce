@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # windows-dez — installer for XFCE
 # Author: Rafael Carvalho Ramos <rafaelramosmacae@gmail.com> — License: GPL-3.0-or-later
-# Usage: ./install.sh [--full] [--light|--dark|--fulldark] [--taskbar] [--wallpaper[=FILE]] [--start-icon=FILE] [--system] [--no-apply]
+# Usage: ./install.sh            (interactive menu)
+#        ./install.sh [options]  (for scripts, see --help)
 set -euo pipefail
 
 NAME=windows-dez
-VERSION=1.2.2
+VERSION=1.2.3
 
 restart_panel() {
   pgrep -x xfce4-panel >/dev/null || return 0
@@ -19,9 +20,11 @@ usage() {
 $NAME $VERSION — Windows 10 inspired theme for XFCE
 by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 
-Usage: ./install.sh [options]
+Usage: ./install.sh             interactive menu: answer each question and press Enter
+       ./install.sh [options]   no questions, for scripts and advanced use
 
-  (no options)          install and apply GTK theme, icons, window borders, notifications and font
+Options:
+  (none of these)       the interactive menu
   --dark                dark taskbar, Start menu and notifications (default)
   --light               light taskbar, Start menu and notifications
   --fulldark            full dark mode: dark windows, file manager, settings, menus and title bars,
@@ -36,6 +39,8 @@ Usage: ./install.sh [options]
   --full, --complete    --taskbar + --wallpaper + smaller desktop icons (36 px, tooltips 48 px)
   --system              install for all users in /usr/share (requires sudo)
   --no-apply            only copy the files, do not change any settings
+  --theme-only          no questions: install and apply only the GTK theme, icons, window borders,
+                        notifications and font (combine with the style options above)
   -h, --help            show this help
 
 Undo everything with ./uninstall.sh
@@ -57,10 +62,122 @@ for arg in "$@"; do
     --wallpaper=*)       WALLPAPER=1; WALLPAPER_FILE="${arg#*=}" ;;
     --start-icon=*)      START_ICON_FILE="${arg#*=}" ;;
     --full|--complete)   TASKBAR=1; WALLPAPER=1; DESKTOP_ICONS=1 ;;
+    --theme-only)        ;;
     -h|--help)           usage; exit 0 ;;
     *) echo "Unknown option: $arg (see --help)"; exit 1 ;;
   esac
 done
+
+# ---------- interactive menu (when run without options) ----------
+# Answers are read from the terminal; Enter picks the default shown in [brackets].
+ask_choice() {  # ask_choice "Question" "option 1 (default)" "option 2" ... -> sets CHOICE
+  local q="$1"; shift
+  local n=$# i ans
+  echo
+  echo "$q"
+  i=1; for o in "$@"; do echo "  $i) $o"; i=$((i+1)); done
+  while :; do
+    read -r -p "Choose 1-$n [1]: " ans </dev/tty || exit 1
+    ans="${ans:-1}"
+    case "$ans" in
+      *[!0-9]*|'') ;;
+      *) if [ "$ans" -ge 1 ] && [ "$ans" -le "$n" ]; then CHOICE=$ans; return; fi ;;
+    esac
+    echo "  Please type a number from 1 to $n."
+  done
+}
+ask_yes_no() {  # ask_yes_no "Question" Y|N -> returns 0 for yes
+  local q="$1" def="$2" ans hint="[Y/n]"
+  [ "$def" = N ] && hint="[y/N]"
+  while :; do
+    read -r -p "$q $hint: " ans </dev/tty || exit 1
+    ans="${ans:-$def}"
+    case "$ans" in
+      [Yy]*) return 0 ;;
+      [Nn]*) return 1 ;;
+    esac
+    echo "  Please answer y or n."
+  done
+}
+ask_file() {  # ask_file "Prompt" -> sets FILE_ANSWER ("" = keep the default)
+  local ans f
+  while :; do
+    read -r -p "$1 (Enter = theme default): " ans </dev/tty || exit 1
+    [ -z "$ans" ] && { FILE_ANSWER=""; return; }
+    f="${ans/#\~/$HOME}"
+    [ -f "$f" ] && { FILE_ANSWER="$f"; return; }
+    echo "  File not found: $ans"
+  done
+}
+
+interactive_menu() {
+  if ! { [ -r /dev/tty ] && : </dev/tty; } 2>/dev/null; then
+    echo "The installer asks a few questions, so run it in a terminal: ./install.sh"
+    echo "For scripts, use the options instead: ./install.sh --help"
+    exit 1
+  fi
+  echo "$NAME $VERSION — Windows 10 inspired theme for XFCE"
+  echo "Answer each question with its number and press Enter (Enter alone picks the default)."
+
+  ask_choice "Style:" \
+    "Dark taskbar and Start menu (default)" \
+    "Light taskbar and Start menu" \
+    "Full dark mode (windows, file manager and settings dark too)"
+  case $CHOICE in 1) STYLE=dark ;; 2) STYLE=light ;; 3) STYLE=fulldark ;; esac
+
+  ask_choice "What to install:" \
+    "Complete (recommended): theme + Windows 10 taskbar and Start menu + wallpaper + desktop icons" \
+    "Theme only: GTK theme, icons, window borders and notifications (keeps your panel and wallpaper)" \
+    "Custom: choose each part" \
+    "Copy the files only (change no settings)"
+  case $CHOICE in
+    1) TASKBAR=1; WALLPAPER=1; DESKTOP_ICONS=1 ;;
+    2) ;;
+    3) echo
+       ask_yes_no "Bottom taskbar (33 px) with the Windows 10 style Start menu?" Y && TASKBAR=1
+       ask_yes_no "Theme wallpaper?" Y && WALLPAPER=1
+       ask_yes_no "Smaller desktop icons (36 px)?" Y && DESKTOP_ICONS=1 ;;
+    4) APPLY=0 ;;
+  esac
+
+  if [ "$APPLY" = 1 ] && [ "$WALLPAPER" = 1 ]; then
+    ask_choice "Wallpaper:" "Theme wallpaper (default)" "My own image (jpg/png)"
+    if [ "$CHOICE" = 2 ]; then ask_file "Image file"; WALLPAPER_FILE="$FILE_ANSWER"; fi
+  fi
+  if [ "$APPLY" = 1 ] && [ "$TASKBAR" = 1 ]; then
+    ask_choice "Start button:" "Theme Start button (default)" "My own image (svg/png)"
+    if [ "$CHOICE" = 2 ]; then ask_file "Image file"; START_ICON_FILE="$FILE_ANSWER"; fi
+  fi
+
+  ask_choice "Install for:" "Only me (default)" "All users, in /usr/share (needs sudo)"
+  if [ "$CHOICE" = 2 ]; then
+    if [ "$(id -u)" != 0 ]; then
+      echo
+      echo "Installing for all users needs administrator rights. Run: sudo ./install.sh"
+      exit 1
+    fi
+    SYSTEM=1
+  fi
+
+  echo
+  echo "Summary:"
+  case $STYLE in dark) echo "  style:      dark taskbar and Start menu" ;;
+                 light) echo "  style:      light taskbar and Start menu" ;;
+                 fulldark) echo "  style:      full dark mode" ;; esac
+  if [ "$APPLY" = 0 ]; then
+    echo "  settings:   left unchanged (files only)"
+  else
+    echo "  taskbar:    $([ "$TASKBAR" = 1 ] && echo "Windows 10 style taskbar and Start menu" || echo "keep my panel")"
+    echo "  wallpaper:  $([ "$WALLPAPER" = 1 ] && echo "${WALLPAPER_FILE:-theme wallpaper}" || echo "keep mine")"
+    [ "$TASKBAR" = 1 ] && echo "  Start icon: ${START_ICON_FILE:-theme Start button}"
+    echo "  desktop:    $([ "$DESKTOP_ICONS" = 1 ] && echo "36 px icons" || echo "keep my icon size")"
+  fi
+  echo "  for:        $([ "$SYSTEM" = 1 ] && echo "all users (/usr/share)" || echo "only me")"
+  echo
+  ask_yes_no "Install now?" Y || { echo "Nothing was changed."; exit 0; }
+  echo
+}
+[ $# -eq 0 ] && interactive_menu
 
 # Expand ~ and make paths absolute
 absolute() {

@@ -2,6 +2,12 @@
 
 Windows Dez — by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 
+## 1.2.3 — 2026-11-14
+
+- The installer is now interactive: run `./install.sh` and choose the style, what to install (complete, theme only, custom or files only), the wallpaper, the Start button and who to install for, then confirm a summary before anything changes. The options (`--full`, `--fulldark`, …) still work for scripts, plus a new `--theme-only`
+- Start button: the four diamonds are a bit larger and closer together (the gap between them is a third narrower), keeping the same overall size
+- New screenshots in the README; the older preview images were removed from `previews/`
+
 ## 1.2.2 — 2026-11-01
 
 - Fixed: windows with client-side decorations (Firefox with its own title bar, header-bar apps) grew when they lost focus and could not be resized from their edges. Reported on Debian 13 with XFCE 4.20 and the Debian Firefox package. The window shadow now keeps the same size when the window is active or not, and the window keeps a 10 px edge to grab for resizing (4 px when no compositor is running)
