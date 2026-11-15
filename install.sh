@@ -29,7 +29,7 @@ Options:
   --light               light taskbar, Start menu and notifications
   --fulldark            full dark mode: dark windows, file manager, settings, menus and title bars,
                         plus the dark taskbar, Start menu and notifications
-  --taskbar             bottom panel, 33 px, full width, Start button without label, flat window buttons,
+  --taskbar             bottom panel, 32 px, full width, Start button without label, flat window buttons,
                         Start menu laid out like Windows 10 (category icons on the left, switched by
                         hovering, all apps A-Z, search box, user and power buttons at the bottom),
                         taskbar buttons reorderable by drag-and-drop
@@ -134,7 +134,7 @@ interactive_menu() {
     1) TASKBAR=1; WALLPAPER=1; DESKTOP_ICONS=1 ;;
     2) ;;
     3) echo
-       ask_yes_no "Bottom taskbar (33 px) with the Windows 10 style Start menu?" Y && TASKBAR=1
+       ask_yes_no "Bottom taskbar (32 px) with the Windows 10 style Start menu?" Y && TASKBAR=1
        ask_yes_no "Theme wallpaper?" Y && WALLPAPER=1
        ask_yes_no "Smaller desktop icons (36 px)?" Y && DESKTOP_ICONS=1 ;;
     4) APPLY=0 ;;
@@ -322,7 +322,7 @@ if [ "$TASKBAR" = 1 ]; then
   set_prop xfce4-panel $P/position string "p=8;x=0;y=0"
   set_prop xfce4-panel $P/position-locked bool true
   set_prop xfce4-panel $P/mode uint 0
-  set_prop xfce4-panel $P/size uint 33
+  set_prop xfce4-panel $P/size uint 32
   set_prop xfce4-panel $P/icon-size uint 24
   set_prop xfce4-panel $P/background-style uint 0
   save xfce4-panel $P/length
@@ -371,8 +371,8 @@ if [ "$TASKBAR" = 1 ]; then
   [ -f "$USER_CSS" ] && sed -i '/\/\* windows-dez:begin/,/\/\* windows-dez:end \*\//d' "$USER_CSS"
   cat >> "$USER_CSS" <<'CSS'
 /* windows-dez:begin — added by the windows-dez installer, removed by uninstall.sh */
-.tasklist { -XfceTasklist-max-button-length: 140;
-  -XfceTasklist-min-button-length: 140; }
+.tasklist { -XfceTasklist-max-button-length: 135;
+  -XfceTasklist-min-button-length: 135; }
 .tasklist button label { font-size: 8pt; }
 /* windows-dez:end */
 CSS

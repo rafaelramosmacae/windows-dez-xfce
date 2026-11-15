@@ -6,6 +6,8 @@ Windows Dez — by Rafael Carvalho Ramos <rafaelramosmacae@gmail.com>
 
 - The installer is now interactive: run `./install.sh` and choose the style, what to install (complete, theme only, custom or files only), the wallpaper, the Start button and who to install for, then confirm a summary before anything changes. The options (`--full`, `--fulldark`, …) still work for scripts, plus a new `--theme-only`
 - Start button: the four diamonds are a bit larger and closer together (the gap between them is a third narrower), keeping the same overall size
+- Taskbar height is now 32 px (was 33 px)
+- Taskbar window buttons are now 135 px wide (were 140 px)
 - New screenshots in the README; the older preview images were removed from `previews/`
 
 ## 1.2.2 — 2026-11-01

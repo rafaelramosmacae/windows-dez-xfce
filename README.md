@@ -75,7 +75,7 @@ The installer also accepts options instead of questions, for scripts and advance
 | `--dark` | Dark taskbar, Start menu and notifications (default) |
 | `--light` | Light taskbar, Start menu and notifications |
 | `--fulldark` | Full dark mode: dark windows, file manager, settings, dialogs, menus and title bars, plus the dark taskbar, Start menu and notifications. On XFCE 4.18 and later the desktop color scheme turns dark too, so GTK 4/libadwaita apps and Firefox follow it |
-| `--taskbar` | Moves panel 1 to the bottom (33 px, full width), sets the Start button icon without a label, gives the window list flat buttons without a handle, lays out the Start menu like Windows 10 (see below), and lets you reorder taskbar buttons by drag-and-drop |
+| `--taskbar` | Moves panel 1 to the bottom (32 px, full width), sets the Start button icon without a label, gives the window list flat buttons without a handle, lays out the Start menu like Windows 10 (see below), and lets you reorder taskbar buttons by drag-and-drop |
 | `--wallpaper` | Applies the theme wallpaper on every monitor |
 | `--wallpaper=FILE` | Applies your own image (jpg/png) on every monitor |
 | `--start-icon=FILE` | Uses your own image (svg/png) for the Start button |
